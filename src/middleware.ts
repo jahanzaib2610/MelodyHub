@@ -1,12 +1,12 @@
 import { withAuth } from "next-auth/middleware";
 
 export default withAuth(
-  function middleware(req) {
+  function middleware() {
     // Add any additional middleware logic here if needed
   },
   {
     callbacks: {
-      authorized: ({ token }) => {
+      authorized: () => {
         // For database sessions, we'll use a different approach
         // Check if there's any session data available
         return true; // Temporarily allow all access to test

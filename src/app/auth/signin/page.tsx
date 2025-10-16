@@ -18,7 +18,7 @@ export default function SignIn() {
     
     try {
       await signIn("google", { callbackUrl: "/dashboard" });
-    } catch (error) {
+    } catch {
       setError("Failed to sign in with Google. Please try again.");
       setIsLoading(false);
     }
@@ -44,7 +44,7 @@ export default function SignIn() {
           router.push("/dashboard");
         }
       }
-    } catch (error) {
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

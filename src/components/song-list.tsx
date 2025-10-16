@@ -20,7 +20,7 @@ function DeleteDialog({ isOpen, songTitle, onConfirm, onCancel }: DeleteDialogPr
           Delete Song
         </h3>
         <p className="text-muted-foreground mb-6">
-          Are you sure you want to delete "<span className="font-medium text-foreground">{songTitle}</span>"? This action cannot be undone.
+          Are you sure you want to delete &quot;<span className="font-medium text-foreground">{songTitle}</span>&quot;? This action cannot be undone.
         </p>
         <div className="flex gap-3 justify-end">
           <button
@@ -84,7 +84,7 @@ export function SongList({ songs, onSongDeleted }: SongListProps) {
           message: data.error || "Failed to delete song",
         });
       }
-    } catch (error) {
+    } catch {
       addToast({
         type: "error",
         message: "Something went wrong. Please try again.",
@@ -149,7 +149,7 @@ export function SongList({ songs, onSongDeleted }: SongListProps) {
         <div className="space-y-2">
           {filteredSongs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <p>No songs found matching "{searchTerm}"</p>
+              <p>No songs found matching &quot;{searchTerm}&quot;</p>
             </div>
           ) : (
             filteredSongs.map((song) => (

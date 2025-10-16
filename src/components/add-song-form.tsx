@@ -48,7 +48,7 @@ export function AddSongForm({ onSongAdded }: AddSongFormProps) {
           message: data.error || "Failed to add song",
         });
       }
-    } catch (error) {
+    } catch {
       addToast({
         type: "error",
         message: "Something went wrong. Please try again.",

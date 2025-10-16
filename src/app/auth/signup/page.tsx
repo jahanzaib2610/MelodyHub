@@ -20,7 +20,7 @@ export default function SignUp() {
     
     try {
       await signIn("google", { callbackUrl: "/dashboard" });
-    } catch (error) {
+    } catch {
       setError("Failed to sign up with Google. Please try again.");
       setIsLoading(false);
     }
@@ -75,7 +75,7 @@ export default function SignUp() {
         const data = await response.json();
         setError(data.message || "Registration failed. Please try again.");
       }
-    } catch (error) {
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
