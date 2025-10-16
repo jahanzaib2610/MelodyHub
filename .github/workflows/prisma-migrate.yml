@@ -1,103 +1,72 @@
-name: Run Prisma Migrations (deploy)
+name: Prisma Migrations CI
 
 on:
   push:
     branches:
       - main
-
-permissions:
-  contents: read
-
-jobs:
-  migrate:
-    name: Apply Prisma Migrations
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Run Prisma Migrate Deploy
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx prisma migrate deploy
-
-      - name: (Optional) Run tests
-        if: always()
-        run: npm test || echo "No tests configured"
-name: Run Prisma Migrations (deploy)
-
-on:
-  push:
-    branches:
-      - main
-
-permissions:
-  contents: read
-
-jobs:
-  migrate:
-    name: Apply Prisma Migrations
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Run Prisma Migrate Deploy
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx prisma migrate deploy
-
-      - name: (Optional) Run tests
-        if: always()
-        run: npm test || echo "No tests configured"
-
-
-name: Resolve Prisma Migration (manual)
-
-on:
   workflow_dispatch:
+    inputs:
+      migration_name:
+        description: 'Migration folder name to mark as applied (for resolve job)'
+        required: true
+        default: '20251017_init'
+
+permissions:
+  contents: read
 
 jobs:
-  resolve-migration:
+  migrate_deploy:
+    # This job runs for push events (deploy migrations)
+    if: github.event_name == 'push'
+    name: Apply Prisma Migrations (deploy)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run Prisma Migrate Deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx prisma migrate deploy
+
+      - name: (Optional) Run tests
+        if: always()
+        run: npm test || echo "No tests configured"
+
+  resolve_migration:
+    # This job runs when manually triggered (workflow_dispatch)
+    if: github.event_name == 'workflow_dispatch'
+    name: Resolve Prisma Migration (mark as applied)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
       - name: Resolve migration as applied
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx prisma migrate resolve --applied "20251017_init"
-name: Resolve Prisma Migration (manual)
+        run: npx prisma migrate resolve --applied "${{ github.event.inputs.migration_name }}"
