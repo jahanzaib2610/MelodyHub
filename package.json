@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "postinstall": "prisma generate",
+    "clean": "rm -rf .next node_modules"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
