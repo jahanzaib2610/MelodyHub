@@ -75,7 +75,7 @@ jobs:
         if: always()
         run: npm test || echo "No tests configured"
 
-
+name: Resolve Prisma Migration (manual)
 on:
   workflow_dispatch:
 
