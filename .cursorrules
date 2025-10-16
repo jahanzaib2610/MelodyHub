@@ -1,0 +1,15 @@
+Purpose: canonical, opinionated conventions for structuring and building the Next.js + NextAuth + Prisma project. Use this file as the single source of truth for on‑boarding, code reviews, and new feature scaffolding.
+
+1. High-level principles
+
+Readability first — code is written for humans. Prefer clarity over cleverness.
+
+Single responsibility — files and components do one thing and do it well.
+
+Reusability by composition — small, focused components composed to form larger UIs.
+
+Type-safety — prefer TypeScript across the codebase.
+
+API contracts — keep backend API routes stable and versioned when necessary.
+
+Secure-by-default — validate inputs, sanitize outputs, and never hardcode secrets.
