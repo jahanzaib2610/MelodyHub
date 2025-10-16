@@ -75,7 +75,9 @@ jobs:
         if: always()
         run: npm test || echo "No tests configured"
 
+
 name: Resolve Prisma Migration (manual)
+
 on:
   workflow_dispatch:
 
@@ -98,3 +100,4 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate resolve --applied "20251017_init"
+name: Resolve Prisma Migration (manual)
